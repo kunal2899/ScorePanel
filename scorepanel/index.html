@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./dist/css/all.css">
+
+</head>
+
+<body>
+    <script>
+        sessionStorage.setItem('innings', 0);
+        sessionStorage.setItem('target', 10000);
+        sessionStorage.removeItem('overs');
+        sessionStorage.removeItem('thisball');
+    </script>
+    <div class="comp">
+            
+            <h1><i class="fas fa-mobile-alt"><i class="fas fa-sync-alt"></i></i></h1>
+           <h2>This Application is not compatible to run in Landscape Mode, if you're using Laptops/Desktops then run this website on Smartphone, and if you're using smartphone then kindly switch screen to Portrait Mode.</h2> 
+    </div>
+    <div class="popup">
+        <div class="ask" style="display: block;">
+            <h2>How many overs?</h2>
+            <input type="number" id="novr"><br>
+            <small id="err"
+                style="color: red; margin-bottom:-40px; position: absolute; left: 50%; transform: translateX(-50%); display: none;"><br>Enter
+                number of overs to PROCEED</small><br>
+            <input class="bt" type="button" value="Let's Play">
+        </div>
+        <div class="extras" style="display: none;">
+            <h2>How many extra runs over NO BALL/WIDE</h2>
+            <input type="button" value="+0" onclick="inp('DOT BALL',true)">
+            <input type="button" value="+1" onclick="inp(value.substring(1,2),true)">
+            <br><input type="button" value="+2" onclick="inp(value.substring(1,2),true)">
+            <input type="button" value="+3" onclick="inp(value.substring(1,2),true)">
+            <br><input type="button" value="+4" onclick="inp(value.substring(1,2),true)">
+            <input type="button" value="+6" onclick="inp(value.substring(1,2),true)">
+        </div>
+        <div class="f-end" style="display: none;">
+            <img src="./assets/stadium.jpeg" alt="">
+            <h2>1<sup>st</sup> INNINGS ENDED</h2>
+            <h3> with target of <span id="targ">---</span>runs in <span id="ovr">---</span> overs</h3>
+            <input type="button" value="Let's Play 2nd Innings">
+        </div>
+        <div class="s-end" style="display: none;">
+            <img src="./assets/stadium.jpeg" alt="">
+            <h2>2<sup>nd</sup> INNINGS ENDED</h2>
+            <h3 style="font-size: 16px;"><span id="who"></span> won by <span id="won"></span></h3>
+            <input type="button" value="PLAY ANOTHER GAME">
+        </div>
+    </div>
+    <div class="plate">
+        <div class="over-d">
+        </div>
+        <div class="run-c">
+            <div class="run"><span id="runs">0</span>/<span id="wickets">0</span></div>
+            <div class="over"><span id="overs">0</span>.<span id="balls">0</span><span id="bd"
+                    style="display: none;">0</span></div>
+        </div>
+        <div class="rr">
+
+            <div class="off">
+                <input type="number" id="target" placeholder="Target"
+                    style="text-align: center; font-family: 'Red Rose', cursive; width: 44px; padding: 10px; font-size: 14px; outline: none; border: none; background-color: rgba(255, 255, 255, 0.616);">
+                <button onclick="chg()" id="reset">RESET</button>
+                <div class="chase" id="chase"> <span id="runchase">0</span> RUNS OFF <span id="ballrem">0</span> BALLS
+                </div>
+            </div>
+            <div class="btm">
+                <label style="font-weight: 600;">Run Rate :&nbsp;</label><span id="runr">---</span>
+                <div class="rrr" id="rrr"><label style="font-weight: 600;">Required Run Rate :&nbsp;</label><span
+                        id="reqrr">---</span></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="inp-plate">
+        <input type="button" style="font-size: 16px; transform: translateY(-9px);" value="DOT BALL"
+            onclick="inp(value)">
+        <input type="button" value="1" onclick="inp(value)">
+        <input type="button" value="2" onclick="inp(value)">
+        <input type="button" value="3" onclick="inp(value)">
+        <input type="button" value="4" onclick="inp(value)">
+        <input type="button" value="6" onclick="inp(value)">
+        <input type="button" style="font-size: 20px;" value="WICKET" onclick="inp(value)">
+        <input type="button" class="extra" style="font-size: 25px;" value="WIDE" onclick="inp(value)">
+        <input type="button" class="extra" style="font-size: 19px;" value="NO BALL" onclick="inp(value)">
+        
+    </div>
+    <div class="foot">
+        <h2>Designed by Kunal</h2>
+        <h5>For Support contact at <b>kunaljain649@gmail.com</b></h5>
+        <h3>&copy; 2020&nbsp; ScorePanel&nbsp; All rights reserved.</h3>
+    </div>
+    <script src="./jquery-3.2.1.min.js"></script>
+    <script>
+        $('.plate .rr .off #reset').click(function () {
+            let tar = document.getElementById('target').value;
+            var runs = document.getElementById('runs').innerText;
+            var balls = document.getElementById('bd').innerText;
+            if (tar == '') {
+                $('.plate .rr .off #chase').css('display', 'none');
+                $('.plate .rr .btm #rrr').css('display', 'none');
+            }
+            else {
+                $('.plate .rr .off #chase').css('display', 'block');
+                $('.plate .rr .btm #rrr').css('display', 'block');
+            }
+            sessionStorage.setItem('target', tar);
+            document.getElementById('runchase').innerText = tar - runs;
+            document.getElementById('ballrem').innerText = (eval(sessionStorage.getItem('overs') + '*6')) - balls;
+        });
+
+        $('.popup .ask .bt').click(function () {
+            let x = document.getElementById('novr').value;
+            if (x == '') {
+                $('.popup .ask #err').css('display', 'grid');
+            }
+            else {
+                sessionStorage.setItem('overs', x);
+                $('.popup').fadeOut(500);
+            }
+        });
+
+        $('.popup .ask #novr').change(function () {
+            let x = document.getElementById('novr').value;
+            if (x == '') {
+                $('.popup .ask #err').css('display', 'grid');
+            }
+            else {
+                $('.popup .ask #err').css('display', 'none');
+            }
+        });
+
+        $('.popup .extras input').click(function () {
+            $('.popup .extras').css('display', 'none');
+            $('.popup').fadeOut(500);
+        });
+
+        $('.popup .f-end input').click(function () {
+            $('.popup .f-end').css('display', 'none');
+            $('.popup').fadeOut(500);
+        });
+
+        $('.inp-plate input[class=extra]').click(function () {
+            $('.popup .extras').css('display', 'block').siblings().css('display', 'none');
+            sessionStorage.setItem('thisball',$(this).attr('value'));
+            $('.popup').fadeIn(500);
+        });
+
+        $('.popup .s-end input').click(function () {
+            location.reload();
+        });
+
+    </script>
+    <script>
+
+        var prev = 0;
+
+        function inp(n, defaulti = false) {
+            let overd = document.querySelector('.over-d');
+            let rball = document.createElement('span');
+            let tar = document.getElementById('target').value;
+            var runs = document.getElementById('runs').innerText;
+            var balls = document.getElementById('bd').innerText;
+            var wickets = document.getElementById('wickets').innerText;
+            let ballrem = document.getElementById('ballrem').innerText;
+            let runrem = document.getElementById('runchase').innerText;
+            if(overd.childElementCount >= 6){
+                $('.over-d').find('span:first-child').remove();
+                $('.over-d').find('div:first-child').remove();
+            }
+            if(balls % 6 == 0){
+                let line = document.createElement('div');
+                overd.appendChild(line);
+            }
+            switch (n) {
+                case '4':
+                    if (defaulti == true) {
+                        balls = eval(balls + '+0');
+                        if(sessionStorage.getItem('thisball') == 'WIDE'){
+                        rball.innerText = 'WD+4';
+                        rball.style.background = 'linear-gradient(rgb(196, 196, 196),rgb(235, 235, 235))';
+                        rball.style.color= 'rgba(0, 0, 0, 0.671)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                        else if(sessionStorage.getItem('thisball') == 'NO BALL'){
+                        rball.innerText = 'NB+4';
+                        rball.style.background = 'linear-gradient(rgb(49, 49, 49),rgb(24, 24, 24))';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                        sessionStorage.removeItem('thisball');
+                    }
+                    else {
+                        balls = eval(balls + '+1');
+                        rball.innerText = '4';
+                        rball.style.background = 'linear-gradient(rgb(71, 71, 255),rgb(2, 2, 90))';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        overd.appendChild(rball);
+                    }
+                    runs = eval(runs + '+4');
+                    break;
+                case '6':
+                    runs = eval(runs + '+6');
+                    if (defaulti == true) {
+                        balls = eval(balls + '+0');
+                        if(sessionStorage.getItem('thisball') == 'WIDE'){
+                        rball.innerText = 'WD+6';
+                        rball.style.background = 'linear-gradient(rgb(196, 196, 196),rgb(235, 235, 235))';
+                        rball.style.color= 'rgba(0, 0, 0, 0.671)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                        else if(sessionStorage.getItem('thisball') == 'NO BALL'){
+                        rball.innerText = 'NB+6';
+                        rball.style.background = 'linear-gradient(rgb(49, 49, 49),rgb(24, 24, 24))';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                    }
+                    else {
+                        balls = eval(balls + '+1');
+                        rball.innerText = '6';
+                        rball.style.background = 'linear-gradient(rgb(71, 71, 255),rgb(2, 2, 90))';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        overd.appendChild(rball);
+                    }
+                    break;
+                case '2':
+                    runs = eval(runs + '+2');
+                    if (defaulti == true) {
+                        balls = eval(balls + '+0');
+                        if(sessionStorage.getItem('thisball') == 'WIDE'){
+                        rball.innerText = 'WD+2';
+                        rball.style.background = 'linear-gradient(rgb(196, 196, 196),rgb(235, 235, 235))';
+                        rball.style.color= 'rgba(0, 0, 0, 0.671)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                        else if(sessionStorage.getItem('thisball') == 'NO BALL'){
+                        rball.innerText = 'NB+2';
+                        rball.style.background = 'linear-gradient(rgb(49, 49, 49),rgb(24, 24, 24))';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                    }
+                    else {
+                        balls = eval(balls + '+1');
+                        rball.innerText = '2';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        overd.appendChild(rball);
+                    }
+                    break;
+                case '1':
+                    runs = eval(runs + '+1');
+                    if (defaulti == true) {
+                        balls = eval(balls + '+0');
+                        if(sessionStorage.getItem('thisball') == 'WIDE'){
+                        rball.innerText = 'WD+1';
+                        rball.style.background = 'linear-gradient(rgb(196, 196, 196),rgb(235, 235, 235))';
+                        rball.style.color= 'rgba(0, 0, 0, 0.671)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                        else if(sessionStorage.getItem('thisball') == 'NO BALL'){
+                        rball.innerText = 'NB+1';
+                        rball.style.background = 'linear-gradient(rgb(49, 49, 49),rgb(24, 24, 24))';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                    }
+                    else {
+                        balls = eval(balls + '+1');
+                        rball.innerText = '1';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        overd.appendChild(rball);
+                    }
+                    break;
+                case '3':
+                    runs = eval(runs + '+3');
+                    if (defaulti == true) {
+                        balls = eval(balls + '+0');
+                        if(sessionStorage.getItem('thisball') == 'WIDE'){
+                        rball.innerText = 'WD+3';
+                        rball.style.background = 'linear-gradient(rgb(196, 196, 196),rgb(235, 235, 235))';
+                        rball.style.color= 'rgba(0, 0, 0, 0.671)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                        else if(sessionStorage.getItem('thisball') == 'NO BALL'){
+                        rball.innerText = 'NB+3';
+                        rball.style.background = 'linear-gradient(rgb(49, 49, 49),rgb(24, 24, 24))';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        rball.style.fontSize = '18px';
+                        overd.appendChild(rball);
+                        }
+                    }
+                    else {
+                        balls = eval(balls + '+1');
+                        rball.innerText = '3';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        overd.appendChild(rball);
+                    }
+                    // alert(balls);
+                    break;
+                case 'DOT BALL':
+                    runs = eval(runs + '+0');
+                    if (defaulti == true) {
+                        balls = eval(balls + '+0');
+                        if(sessionStorage.getItem('thisball') == 'WIDE'){
+                        rball.innerText = 'WD';
+                        rball.style.background = 'linear-gradient(rgb(196, 196, 196),rgb(235, 235, 235))';
+                        rball.style.color= 'rgba(0, 0, 0, 0.671)';
+                        rball.style.fontSize = '20px';
+                        overd.appendChild(rball);
+                        }
+                        else if(sessionStorage.getItem('thisball') == 'NO BALL'){
+                        rball.innerText = 'NB';
+                        rball.style.background = 'linear-gradient(rgb(49, 49, 49),rgb(24, 24, 24))';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        rball.style.fontSize = '20px';
+                        overd.appendChild(rball);
+                        }
+                    }
+                    else {
+                        balls = eval(balls + '+1');
+                        rball.innerText = '0';
+                        rball.style.color= 'rgba(248, 247, 247, 0.753)';
+                        overd.appendChild(rball);
+                    }
+                    break;
+                case 'WICKET':
+                    wickets = eval(wickets + '+1');
+                    balls = eval(balls + '+1');
+                    rball.innerText = 'W';
+                    rball.style.color= 'rgba(0, 0, 0, 0.671)';
+                    rball.style.background= 'linear-gradient(yellow,orange)';
+                    overd.appendChild(rball);
+                    break;
+                case 'WIDE':
+                    runs = eval(runs + '+1');
+                    // balls = balls;
+                    break;
+                case 'NO BALL':
+                    runs = eval(runs + '+1');
+                    // balls = balls;
+                    break;
+
+            }
+
+            document.getElementById('runs').innerText = runs;
+            ballsd = (balls >= 6) ? balls % 6 : balls;
+            document.getElementById('balls').innerText = ballsd;
+            document.getElementById('bd').innerText = balls;
+            document.getElementById('runchase').innerText = tar - runs;
+            document.getElementById('ballrem').innerText = (eval(sessionStorage.getItem('overs') + '*6')) - balls;
+            // alert(balls+'   '+ballsd);
+            let overs = Math.floor(balls / 6);
+            let runr = ((runs / balls) * 6).toFixed(1);
+            let rrr = ((runrem / ballrem) * 6).toFixed(1);
+            document.getElementById('reqrr').innerText = rrr;
+            document.getElementById('overs').innerText = overs;
+            document.getElementById('runr').innerText = runr;
+            document.getElementById('wickets').innerText = wickets;
+
+            if (wickets == 10 || overs == sessionStorage.getItem('overs') || sessionStorage.getItem('target') - 1 < runs) {
+                if (tar == '') {
+                    let inn = sessionStorage.getItem('innings');
+                    sessionStorage.setItem('innings', eval(inn + '+1'));
+                }
+                else{
+                    sessionStorage.setItem('innings',2);
+                }
+                sessionStorage.setItem('flag', 1);
+                $('.over-d').empty();
+            }
+
+            if (sessionStorage.getItem('innings') == 1 && sessionStorage.getItem('flag') == 1) {
+                $('.popup .f-end').css('display', 'block').siblings().css('display', 'none');
+                $('.popup').fadeIn(500);
+                sessionStorage.removeItem('flag');
+                if (wickets == 10 || overs == sessionStorage.getItem('overs')) {
+                    document.getElementById('runr').innerText = '---';
+                    sessionStorage.setItem('target', eval(runs + '+1'));
+                    document.getElementById('targ').innerText = sessionStorage.getItem('target');
+                    document.getElementById('ovr').innerText = sessionStorage.getItem('overs');
+                    $('.plate .rr .off #chase').css('display', 'block');
+                    document.getElementById('ballrem').innerText = (eval(sessionStorage.getItem('overs') + '*6'));
+                    document.getElementById('runchase').innerText = runs;
+                    document.getElementById('reqrr').innerText = (runs / (eval(sessionStorage.getItem('overs') + '*6'))).toFixed(1);
+                    document.getElementById('runs').innerText = 0;
+                    document.getElementById('wickets').innerText = 0;
+                    document.getElementById('overs').innerText = 0;
+                    document.getElementById('balls').innerText = 0;
+                    document.getElementById('bd').innerText = 0;
+                    $('.plate .rr .btm #rrr').css('display', 'block');
+                }
+            }
+            if (sessionStorage.getItem('innings') == 2 && sessionStorage.getItem('flag') == 1) {
+                if (sessionStorage.getItem('target') - 1 < runs) {
+                    document.getElementById('who').innerText = '2nd Innings Batting Team';
+                    document.getElementById('won').innerText = (10 - wickets) + ' wickets';
+                }
+                else if (wickets == 10 || overs == sessionStorage.getItem('overs')) {
+                    document.getElementById('who').innerText = '1st Innings Batting Team';
+                    document.getElementById('won').innerText = (sessionStorage.getItem('target') - runs) + ' runs';
+                }
+                $('.popup .s-end').css('display', 'block').siblings().css('display', 'none');
+                $('.popup').fadeIn(500);
+            }
+
+            if (!(tar == '')) {
+                document.getElementById('runchase').innerText = tar - runs;
+                document.getElementById('ballrem').innerText = (eval(sessionStorage.getItem('overs') + '*6')) - balls;
+            }
+
+            if (sessionStorage.getItem('innings') == 1) {
+                document.getElementById('runchase').innerText = sessionStorage.getItem('target') - runs;
+                document.getElementById('ballrem').innerText = (eval(sessionStorage.getItem('overs') + '*6')) - balls;
+            }
+
+        }
+
+        if (tar == '' && sessionStorage.getItem('innings') == 1) {
+            document.getElementById('runchase').innerText = sessionStorage.getItem('target') - runs;
+            document.getElementById('ballrem').innerText = (eval(sessionStorage.getItem('overs') + '*6')) - balls;
+        }
+
+
+    </script>
+</body>
+
+</html>
