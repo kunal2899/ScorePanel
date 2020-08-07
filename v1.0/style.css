@@ -196,16 +196,15 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: 5px;
+  margin: 5px 4px;
+  width: 40px;
   height: 40px;
-  margin-left: 8px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   color: rgba(248, 247, 247, 0.753);
   background: -webkit-gradient(linear, left top, left bottom, from(#ff0404), to(#a00404));
   background: linear-gradient(#ff0404, #a00404);
   border-radius: 50%;
   font-size: 30px;
-  width: 40px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -216,9 +215,7 @@ body {
   width: .5px;
   opacity: .8;
   border: 1px solid white;
-  margin-left: 8px;
-  -webkit-transform: translateX(-2.8px);
-          transform: translateX(-2.8px);
+  margin: 8px 2px;
   margin-top: 5px;
   border-radius: 300px;
   background-color: white;
@@ -303,17 +300,17 @@ body {
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
-  height: 370px;
-  width: 370px;
-  padding: 40px 0px;
+  height: 328px;
+  width: 328px;
+  padding: 0px;
   background: rgba(255, 255, 255, 0);
 }
 
 .inp-plate input[type=button] {
-  width: 100px;
-  height: 100px;
+  width: 95px;
+  height: 95px;
   font-size: 50px;
-  margin: 10px;
+  margin: 5px;
   font-weight: 500;
   font-family: 'Red Rose', cursive;
   border: 4px solid white;
@@ -588,6 +585,28 @@ body {
   .foot h5 {
     margin-top: 10px;
     margin-left: 50px;
+  }
+}
+
+@media screen and (min-height: 5.5in) {
+  .over-d span {
+    margin: 9px 2px;
+    width: 25px;
+    height: 25px;
+  }
+  .over-d div {
+    margin: 8px 2px;
+    margin-top: 5px;
+  }
+  .inp-plate {
+    height: 328px;
+    width: 328px;
+    padding: 0px;
+  }
+  .inp-plate input[type=button] {
+    width: 95px;
+    height: 95px;
+    margin: 5px;
   }
 }
 
