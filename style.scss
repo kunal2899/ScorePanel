@@ -351,6 +351,47 @@ body{
             }
         }
     }
+
+    .extrass{
+        width: 400px;
+        height: 500px;
+        /* background: url("../../assets/pair.jpg") 50% 50%;
+        background-size: cover; */
+        background: transparent;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        h2{
+            font-size: 25px;
+            padding: 15px;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.767);
+            margin-top: 1em;
+        }
+
+        input{
+            padding: 20px;
+            border: none;
+            border-radius: 50%;
+            margin: 20px;
+            font-size: 35px;
+            border: 2px solid white;
+            background: none;
+            color: white;
+            font-family: 'Red Rose';
+            height: 90px;
+            width: 90px;
+            outline: none;
+            transition: .3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            &:hover{
+                background: white;
+                color: black;
+                font-weight: 600;
+            }
+        }
+    }
+
     .f-end,.s-end{
         width: 400px;
         height: 500px;

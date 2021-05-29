@@ -41,6 +41,16 @@
             <br><input type="button" value="+4" onclick="inp(value.substring(1,2),true)">
             <input type="button" value="+6" onclick="inp(value.substring(1,2),true)">
         </div>
+        <div class="extrass" style="display: none;">
+            <h2>If Run Out then how many runs to add</h2>
+            <input type="button" value="+1" onclick="inp(value.substring(1,2),true)">
+            <br><input type="button" value="+2" onclick="inp(value.substring(1,2),true)">
+            <input type="button" value="+3" onclick="inp(value.substring(1,2),true)">
+            <h2>For any wicket other than Run Out</h2>
+            <input type="button" value="NORMAL WICKET"
+                style="margin: 0px;width: auto; height: auto; padding: 15px 25px; font-size: 25px; border-radius: 60px;"
+                onclick="inp('WICKET')">
+        </div>
         <div class="f-end" style="display: none;">
             <img src="./assets/stadium.jpeg" alt="">
             <h2>1<sup>st</sup> INNINGS ENDED</h2>
@@ -60,7 +70,7 @@
         <div class="run-c">
             <div class="run"><span id="runs">0</span>/<span id="wickets">0</span></div>
             <div class="over"><span id="overs">0</span>.<span id="balls">0</span><span id="bd"
-                    style="display: block;">0</span></div>
+                    style="display: none;">0</span></div>
         </div>
         <div class="rr">
 
@@ -87,10 +97,10 @@
         <input type="button" value="3" onclick="inp(value)">
         <input type="button" value="4" onclick="inp(value)">
         <input type="button" value="6" onclick="inp(value)">
-        <input type="button" style="font-size: 20px;" value="WICKET" onclick="inp(value)">
+        <input type="button" style="font-size: 20px;" value="WICKET">
         <input type="button" class="extra" style="font-size: 25px;" value="WIDE" onclick="inp(value)">
         <input type="button" class="extra" style="font-size: 19px;" value="NO BALL" onclick="inp(value)">
-        <input type="button" disabled value="One Ball Back" style="width: 100%; border-radius: 50px; font-size: 30px;">
+        <input type="button" value="One Ball Back" style="width: 100%; border-radius: 50px; font-size: 30px;">
     </div>
     <div class="foot">
         <h2>Designed by Kunal</h2>
@@ -121,7 +131,7 @@
             let trun = document.getElementById('runs').innerText;
             let tball = document.getElementById('bd').innerText;
             let twkt = document.getElementById('wickets').innerText;
-            switch(od.lastChild.innerText){
+            switch (od.lastChild.innerText) {
                 case '4':
                     document.getElementById('runs').innerText = trun - 4;
                     document.getElementById('bd').innerText = tball - 1;
@@ -154,23 +164,23 @@
                     document.getElementById('runs').innerText = trun - 1;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'WD+1':
+                case 'WD+1':
                     document.getElementById('runs').innerText = trun - 2;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'WD+2':
+                case 'WD+2':
                     document.getElementById('runs').innerText = trun - 3;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'WD+3':
+                case 'WD+3':
                     document.getElementById('runs').innerText = trun - 4;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'WD+4':
+                case 'WD+4':
                     document.getElementById('runs').innerText = trun - 5;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'WD+6':
+                case 'WD+6':
                     document.getElementById('runs').innerText = trun - 7;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
@@ -178,23 +188,23 @@
                     document.getElementById('runs').innerText = trun - 1;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'NB+1':
+                case 'NB+1':
                     document.getElementById('runs').innerText = trun - 2;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'NB+2':
+                case 'NB+2':
                     document.getElementById('runs').innerText = trun - 3;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'NB+3':
+                case 'NB+3':
                     document.getElementById('runs').innerText = trun - 4;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'NB+4':
+                case 'NB+4':
                     document.getElementById('runs').innerText = trun - 5;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
-                    case 'NB+6':
+                case 'NB+6':
                     document.getElementById('runs').innerText = trun - 7;
                     document.getElementById('bd').innerText = tball - 0;
                     break;
@@ -203,17 +213,17 @@
             totalb = document.getElementById('bd').innerText;
             document.getElementById('balls').innerText = (totalb >= 6) ? totalb % 6 : totalb;
             let tar;
-            if(document.getElementById('target').value != ''){
+            if (document.getElementById('target').value != '') {
                 tar = document.getElementById('target').value;
             }
-            else{
+            else {
                 tar = sessionStorage.getItem('target');
             }
             document.getElementById('runchase').innerText = tar - trun;
             document.getElementById('ballrem').innerText = (eval(sessionStorage.getItem('overs') + '*6')) - tball;
             let overs = Math.floor(tball / 6);
             let runr = ((trun / tball) * 6).toFixed(1);
-            
+
             document.getElementById('overs').innerText = overs;
             document.getElementById('runr').innerText = runr;
             let ballrem = document.getElementById('ballrem').innerText;
@@ -247,6 +257,10 @@
             $('.popup .extras').css('display', 'none');
             $('.popup').fadeOut(500);
         });
+        $('.popup .extrass input').click(function () {
+            $('.popup .extras').css('display', 'none');
+            $('.popup').fadeOut(500);
+        });
 
         $('.popup .f-end input').click(function () {
             $('.popup .f-end').css('display', 'none');
@@ -255,6 +269,12 @@
 
         $('.inp-plate input[class=extra]').click(function () {
             $('.popup .extras').css('display', 'block').siblings().css('display', 'none');
+            sessionStorage.setItem('thisball', $(this).attr('value'));
+            $('.popup').fadeIn(500);
+        });
+
+        $('.inp-plate input[value="WICKET"]').click(function () {
+            $('.popup .extrass').css('display', 'block').siblings().css('display', 'none');
             sessionStorage.setItem('thisball', $(this).attr('value'));
             $('.popup').fadeIn(500);
         });
@@ -359,6 +379,15 @@
                             rball.style.fontSize = '18px';
                             overd.appendChild(rball);
                         }
+                        else if (sessionStorage.getItem('thisball') == 'WICKET') {
+                            wickets = eval(wickets + '+1');
+                            balls = eval(balls + '+1');
+                            rball.innerText = 'W+2';
+                            rball.style.color = 'rgba(0, 0, 0, 0.671)';
+                            rball.style.background = 'linear-gradient(yellow,orange)';
+                            rball.style.fontSize = '18px';
+                            overd.appendChild(rball);
+                        }
                     }
                     else {
                         balls = eval(balls + '+1');
@@ -385,6 +414,15 @@
                             rball.style.fontSize = '18px';
                             overd.appendChild(rball);
                         }
+                        else if (sessionStorage.getItem('thisball') == 'WICKET') {
+                            wickets = eval(wickets + '+1');
+                            balls = eval(balls + '+1');
+                            rball.innerText = 'W+1';
+                            rball.style.color = 'rgba(0, 0, 0, 0.671)';
+                            rball.style.background = 'linear-gradient(yellow,orange)';
+                            rball.style.fontSize = '18px';
+                            overd.appendChild(rball);
+                        }
                     }
                     else {
                         balls = eval(balls + '+1');
@@ -408,6 +446,15 @@
                             rball.innerText = 'NB+3';
                             rball.style.background = 'linear-gradient(rgb(49, 49, 49),rgb(24, 24, 24))';
                             rball.style.color = 'rgba(248, 247, 247, 0.753)';
+                            rball.style.fontSize = '18px';
+                            overd.appendChild(rball);
+                        }
+                        else if (sessionStorage.getItem('thisball') == 'WICKET') {
+                            wickets = eval(wickets + '+1');
+                            balls = eval(balls + '+1');
+                            rball.innerText = 'W+3';
+                            rball.style.color = 'rgba(0, 0, 0, 0.671)';
+                            rball.style.background = 'linear-gradient(yellow,orange)';
                             rball.style.fontSize = '18px';
                             overd.appendChild(rball);
                         }
@@ -447,12 +494,12 @@
                     }
                     break;
                 case 'WICKET':
-                    wickets = eval(wickets + '+1');
-                    balls = eval(balls + '+1');
-                    rball.innerText = 'W';
-                    rball.style.color = 'rgba(0, 0, 0, 0.671)';
-                    rball.style.background = 'linear-gradient(yellow,orange)';
-                    overd.appendChild(rball);
+                        wickets = eval(wickets + '+1');
+                        balls = eval(balls + '+1');
+                        rball.innerText = 'W';
+                        rball.style.color = 'rgba(0, 0, 0, 0.671)';
+                        rball.style.background = 'linear-gradient(yellow,orange)';
+                        overd.appendChild(rball);
                     break;
                 case 'WIDE':
                     runs = eval(runs + '+1');
